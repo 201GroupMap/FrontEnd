@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title>Welcome to Road Trip - Login</title>
+	<script>
+		function validate(){
+			return true;
+		}
+	</script>
+</head>
+<body>
+	<h1>Welcome to Road Trip</h1>
+	<table>
+		<td valign="top">
+			<h1>Login</h1>
+			<div name="loginErr"></div>
+			<form name="loginForm" method="GET" action="homepage.html" onsubmit="return validate();">
+				Username<br />
+				<input type="text" name="username"><br />
+				Password<br />
+				<input type="password" name="password"><br /><br />
+				<input type="submit" name="submit" value="Login">
+				<button style="float: right;" formaction="publicItin.html">Login as Guest</button>
+			</form>
+
+		</td>
+		<td width="100"></td>
+		<td valign="top">
+			<h1>Sign Up</h1>
+			<form name="signUpForm" method="GET" action="homepage.html">
+				Username<br />
+				<input type="text" name="username"><br />
+				Password<br />
+				<input type="password" name="password"><br />
+				Confirm Password<br />
+				<input type="password" name="passwordConfirmed"><br /><br />
+				<input type="submit" name="submit" value="Login">
+				<input type="reset" name="reset" value="Clear" style="float: right;">
+			</form>
+		</td>
+	</table>
+</body>
+</html>
