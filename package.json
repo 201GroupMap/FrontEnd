@@ -1,0 +1,22 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "frontend stuff for 201 group project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/201GroupMap/FrontEnd.git"
+  },
+  "author": "Jamin Chen, Austin Bahng, Daniel Ho, Zexia Zhang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/201GroupMap/FrontEnd/issues"
+  },
+  "homepage": "https://github.com/201GroupMap/FrontEnd#readme",
+  "devDependencies": {
+    "electron": "1.7.9"
+  }
+}
