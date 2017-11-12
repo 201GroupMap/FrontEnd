@@ -12,7 +12,7 @@ app.on('ready',function(){
 	mainWindow = new BrowserWindow({});
 	// load html
 	mainWindow.loadURL(url.format({
-		pathname: path.join(__dirname, 'WebContent/index.html'),
+		pathname: path.join(__dirname, 'WebContent/login.jsp'),
 		protocol: 'file:',
 		slahes: true
 	}));
