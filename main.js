@@ -9,8 +9,12 @@ let mainWindow;
 // Listen and wait for app to be ready
 app.on('ready',function(){
 	// create the window
-	mainWindow = new BrowserWindow({});
+	mainWindow = new BrowserWindow({
+		show: false
+	});
 	//mainWindow.setMenu(null);
+	// open window maximized
+	mainWindow.maximize();
 	// load html
 	mainWindow.loadURL(url.format({
 		pathname: path.join(__dirname, 'WebContent/login.html'),
