@@ -1,4 +1,5 @@
 $red: #fd5c63;
+$dark-grey: rgb(72, 72, 72);
 
 body {
   font-family: 'Karla', sans-serif;
@@ -7,6 +8,26 @@ body {
 h2 {
   font-weight: bold;
   color: rgb(72, 72, 72);
+}
+
+h3 {
+  margin-top: 10px;
+  color: rgb(72, 72, 72);
+}
+
+.infowindow-img-wrapper {
+  float: left;
+}
+
+.infowindow-content-wrapper {
+  float: right;
+  padding-left: 10px;
+}
+
+img.infowindow-img {
+  object-fit: cover;
+  width: 100px;
+  height: 100px;
 }
 
 .pac-container {
@@ -21,6 +42,35 @@ h2 {
   min-width: 358px;
   padding-top: 6px;
   padding-bottom: 6px;
+}
+
+/* Hide the "view on google maps" footer that gmaps adds by default */
+.gm-style-iw > div:nth-child(2) {
+  display: none;
+}
+
+#route-options-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.route-option {
+  cursor: pointer;
+  color: $dark-grey;
+  border: 1px solid white;
+  margin: 10px;
+  padding: 5px;
+  &:hover {
+    background-color: #eeeeee;
+  }
+}
+
+.route-option-clicked {
+  color: white;
+  background-color: $red;
+  &:hover {
+    background-color: $red;
+  }
 }
 
 #main {
@@ -60,14 +110,28 @@ h2 {
     padding: 0px 10px;
     margin-bottom: 0;
 
+    .panel-img-wrapper {
+      float: left;
+      margin: 5px;
+      margin-right: 10px;
+
+      img {
+        object-fit: cover;
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    .panel-content {
+      &:hover {
+        background-color: #eeeeee;
+      }
+    }
+
     .panel-address {
       margin: 10px 0px;
       padding: 10px;
       cursor: pointer;
-
-      &:hover {
-        background-color: #eeeeee;
-      }
     }
 
     .search-bar-wrapper {
@@ -97,5 +161,19 @@ h2 {
   .closed {
     height: 100px;
   }
+}
 
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+//  color: #d8d8d8;
+    background-color: #d0d0d0;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 20px;
+    background-color: $red;
 }

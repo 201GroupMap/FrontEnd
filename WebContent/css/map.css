@@ -5,6 +5,22 @@ h2 {
   font-weight: bold;
   color: #484848; }
 
+h3 {
+  margin-top: 10px;
+  color: #484848; }
+
+.infowindow-img-wrapper {
+  float: left; }
+
+.infowindow-content-wrapper {
+  float: right;
+  padding-left: 10px; }
+
+img.infowindow-img {
+  object-fit: cover;
+  width: 100px;
+  height: 100px; }
+
 .pac-container {
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
   box-sizing: border-box;
@@ -16,6 +32,29 @@ h2 {
   min-width: 358px;
   padding-top: 6px;
   padding-bottom: 6px; }
+
+/* Hide the "view on google maps" footer that gmaps adds by default */
+.gm-style-iw > div:nth-child(2) {
+  display: none; }
+
+#route-options-list {
+  list-style: none;
+  padding-left: 0; }
+
+.route-option {
+  cursor: pointer;
+  color: #484848;
+  border: 1px solid white;
+  margin: 10px;
+  padding: 5px; }
+  .route-option:hover {
+    background-color: #eeeeee; }
+
+.route-option-clicked {
+  color: white;
+  background-color: #fd5c63; }
+  .route-option-clicked:hover {
+    background-color: #fd5c63; }
 
 #main {
   height: 100%;
@@ -47,12 +86,20 @@ h2 {
     border-radius: 0;
     padding: 0px 10px;
     margin-bottom: 0; }
+    #sidebar .panel .panel-img-wrapper {
+      float: left;
+      margin: 5px;
+      margin-right: 10px; }
+      #sidebar .panel .panel-img-wrapper img {
+        object-fit: cover;
+        width: 60px;
+        height: 60px; }
+    #sidebar .panel .panel-content:hover {
+      background-color: #eeeeee; }
     #sidebar .panel .panel-address {
       margin: 10px 0px;
       padding: 10px;
       cursor: pointer; }
-      #sidebar .panel .panel-address:hover {
-        background-color: #eeeeee; }
     #sidebar .panel .search-bar-wrapper {
       border: 1px solid #dbdbdb;
       box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
@@ -72,5 +119,15 @@ h2 {
       outline: none; }
   #sidebar .closed {
     height: 100px; }
+
+::-webkit-scrollbar {
+  width: 7px; }
+
+::-webkit-scrollbar-track {
+  background-color: #d0d0d0; }
+
+::-webkit-scrollbar-thumb {
+  width: 20px;
+  background-color: #fd5c63; }
 
 /*# sourceMappingURL=map.css.map */

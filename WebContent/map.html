@@ -106,26 +106,66 @@
       <div id="start-panel" class="panel">
         <div class="panel-title">
           <h2>Starting Point</h2>
-          <div class="search-bar-wrapper">
+          <div id="start-search-bar-wrapper" class="search-bar-wrapper">
             <input id="start-search-bar" class="controls" type="text" placeholder="Search Starting Point">
           </div>
         </div>
-        <div class="panel-content">
+        <div id="start-panel-content" class="panel-content">
+          <div class="panel-img-wrapper"></div>
           <div class="panel-address">No origin yet</div>
+        </div>
+      </div>
+      <div id="stops-panel" class="panel" style="display: none;">
+        <div class="panel-title">
+          <h2>Stops</h2>
+        </div>
+        <div id="stops-panel-content" class="panel-content">
+          <div class="panel-address">No stops yet</div>
         </div>
       </div>
       <div id="end-panel" class="panel">
         <div class="panel-title">
           <h2>Destination</h2>
-          <div class="search-bar-wrapper">
+          <div id="end-search-bar-wrapper" class="search-bar-wrapper">
             <input id="end-search-bar" class="controls" type="text" placeholder="Search Destination">
           </div>
         </div>
-        <div class="panel-content">
+        <div id="end-panel-content" class="panel-content">
+          <div class="panel-img-wrapper"></div>
           <div class="panel-address">No destination yet</div>
         </div>
       </div>
-      <div id="stops" class="panel">
+      <div id="route-search-panel" class="panel">
+        <div class="panel-title">
+          <h2>Search along Route</h2>
+          <button id="search-button" class="btn btn-sm">Go!</button>
+          <div class="search-bar-wrapper">
+            <input id="route-search-bar" class="controls" type="text" placeholder="Search Destination">
+          </div>
+          <div id="route-search-radius-wrapper">
+            <label>Search Radius (mi.)</label><br/>
+            <div id="radius-radio-wrapper">
+              <div class="radio-wrapper">
+                <input type="radio" name="search-radius" value="40" checked>40
+              </div>
+              <div class="radio-wrapper">
+                <input type="radio" name="search-radius" value="80">80
+              </div>
+              <div class="radio-wrapper">
+                <input type="radio" name="search-radius" value="120">120
+              </div>
+            </div>
+          </div>
+          <div id="route-options-wrapper">
+            <label>Filters</label>
+            <ul id="route-options-list">
+              <li class="route-option">Lodging</li>
+              <li class="route-option">Attractions</li>
+              <li class="route-option">Hikes</li>
+              <li class="route-option">FOOD</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
     <div id="main">
@@ -228,9 +268,8 @@
 
     </script>
   -->
-
+  <script src="MapEditor.js"></script>
   <script src="map.js"></script>
-
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMNN3WNSG_h7EX8RXhI3s9ux7Q6Hyqg1s&libraries=places&callback=m.init"
        ></script>
   <script src="RouteBoxer.js"></script>
