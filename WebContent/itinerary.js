@@ -54,7 +54,9 @@ var noItin = function(type) {
 	$("#"+type).append("<p>No itineraries available</p>");
 }
 
-var user_name = "Daniel_Ho";
+var user = JSON.parse(localStorage.getItem("user"));
+var user_name = user.name;
+$("#profile_img").attr('src', user.picture);
 let endpoint = "http://roadtrip-env.us-west-1.elasticbeanstalk.com/";
 $.get(endpoint+"MyItinerary/"+user_name, function(data, status) {
 		if(data.length!=0) {
