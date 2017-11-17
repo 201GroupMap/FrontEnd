@@ -1,3 +1,5 @@
+const BACKEND_URL = "http://roadtrip-env.us-west-1.elasticbeanstalk.com";
+
 const API_KEY = "AIzaSyAMNN3WNSG_h7EX8RXhI3s9ux7Q6Hyqg1s";
 const MARKER_ICON_URL = "https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi_hdpi.png";
 const USC_COORDS = {lat: 34.021707, lng: -118.288242};
@@ -7,6 +9,8 @@ const PHOTO_WIDTH = 200;
 var m = new MapEditor();
 
 function MapEditor () {
+  this.ownerName = "Daniel Ho";
+
   this.mapContainer = document.getElementById("map");
   this.startSearchBarContainer = document.getElementById("start-search-bar");
   this.endSearchBarContainer = document.getElementById("end-search-bar");
@@ -23,7 +27,12 @@ MapEditor.prototype.init = function () {
   this.initSearchBars();
   this.data = {};
 
-  this.directionsDisplay = new google.maps.DirectionsRenderer();
+  this.directionsDisplay = new google.maps.DirectionsRenderer({
+    markerOptions: {
+      optimized: false,
+      zIndex: 9999999999
+    }
+  });
   this.directionsDisplay.setMap(this.map);
   this.directionsService = new google.maps.DirectionsService();
 
@@ -31,6 +40,33 @@ MapEditor.prototype.init = function () {
   this.placesService = new google.maps.places.PlacesService(this.map);
 
   this.stops = new Map();
+  if (getItineraryId()) this.getPreviousData(this.loadPreviousData);
+}
+
+MapEditor.prototype.getPreviousData = function (callback) {
+  $.get({
+    url: BACKEND_URL + "/Itinerary" + "/" + getItineraryId(),
+    dataType: "json",
+    context: this,
+    success: function (results) {
+      callback.call(this, results);
+    }
+  });
+}
+
+MapEditor.prototype.loadPreviousData = function (results) {
+  console.log("previous data received", results);
+  // Add start location
+  let startId = results.startId;
+  this.getPlaceInfo(startId, this.addStart.bind(this));
+  // Add end location
+  let endId = results.endId;
+  this.getPlaceInfo(endId, this.addEnd.bind(this));
+  // Add stops
+  for (let i = 0; i < results.stops.length; i++) {
+    let placeId = results.stops[i];
+    this.getPlaceInfo(placeId, this.addStop.bind(this));
+  }
 }
 
 MapEditor.prototype.initMap = function () {
@@ -121,7 +157,7 @@ MapEditor.prototype.searchWithDelay = function (bounds, delay) {
         // Click listener to add stop
         let self = this;
         marker.addListener("click", function () {
-          self.addStop(this.getPlace());
+          self.getPlaceInfo(this.getPlace().placeId, self.addStop.bind(self));
         })
 
         let contentString = `
@@ -164,13 +200,96 @@ MapEditor.prototype.searchWithDelay = function (bounds, delay) {
   } , delay);
 }
 
+// takes in a FULL place object
 MapEditor.prototype.addStop = function (place) {
+  let placeId = place.place_id;
   console.log("Adding new stop", place);
-  this.stops.set(place.placeId, place);
+  this.stops.set(placeId, place);
+  let stopDiv = $(`
+    <div id="${placeId}" class="panel-content" style="display: none;">
+      <div class="panel-img-wrapper">
+        ${place.photos ?
+          `<img class="infowindow-img" src="${place.photos[0].getUrl({
+              maxWidth: 120,
+              maxWidth: 120
+          })}"/ >`
+          :
+          ""
+        }
+      </div>
+      <div class="panel-address">
+        <p>
+          <span style="font-weight: bold;">${place.name}</span><br />
+          ${place.vicinity}
+        </p>
+      </div>
+      <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">×</span>
+      </button>
+    </div>
+  `);
+  stopDiv.find("button").click(this.removeStop.bind(this, placeId));
+  $("#stops-list").append(stopDiv);
+  stopDiv.slideDown("fast");
   if (this.stops.size === 1) {
     // show Stops panel
-    $("#stops-panel").slideDown();
+    $("#stops-panel").slideDown("fast");
   }
+  this.drawRoute();
+}
+
+MapEditor.prototype.removeStop = function (placeId) {
+  console.log("removing stop with id of", placeId);
+  $(`#${placeId}`).remove();
+  this.stops.delete(placeId);
+  if (this.stops.size === 0) {
+    $("#stops-panel").slideUp("fast");
+  }
+}
+
+MapEditor.prototype.getThumbnailURL = function () {
+  let tempBounds = new google.maps.LatLngBounds();
+  let startLocation = this.data.start.geometry.location;
+  let endLocation = this.data.end.geometry.location;
+  tempBounds.extend(startLocation);
+  tempBounds.extend(endLocation);
+  this.stops.forEach((place, placeId) => {
+    let stopLocation = place.geometry.location;
+    tempBounds.extend(stopLocation);
+  })
+  let mapCenter = tempBounds.getCenter();
+  let routePolyline = this.directions.routes[0].overview_polyline;
+  let url = "https://maps.googleapis.com/maps/api/staticmap?";
+  //url += `zoom=10`;
+  url += `&size=400x400`;
+  url += `&markers=color:red%7C${startLocation.lat()},${startLocation.lng()}`;
+  this.stops.forEach((place, placeId) => {
+    let stopLocation = place.geometry.location;
+    url += `&markers=color:red%7C${stopLocation.lat()},${stopLocation.lng()}`;
+  })
+  url += `&markers=color:red%7C${endLocation.lat()},${endLocation.lng()}`;
+  url += `&path=weight:3%7Ccolor:blue%7Cenc:${routePolyline}`;
+  console.log("Map center is", mapCenter);
+  /*
+  let markers = [];
+  markers.push(`color:red%7C${startLocation.lat()},${startLocation.lng()}`);
+  this.stops.forEach((place, placeId) => {
+    let stopLocation = place.geometry.location;
+    markers.push(`color:red%7C${stopLocation.lat()},${stopLocation.lng()}`);
+  })
+  markers.push(`color:red%7C${endLocation.lat()},${endLocation.lng()}`);
+  */
+  /*
+  let url = "https://maps.googleapis.com/maps/api/staticmap?";
+  let params = $.param({
+    zoom: 5,
+    size: "400x400",
+    markers: markers,
+    key: API_KEY
+  }, true);
+  url += params;
+  */
+  return url;
 }
 
 MapEditor.prototype.showActiveBounds = function () {
@@ -183,6 +302,38 @@ MapEditor.prototype.showActiveBounds = function () {
       animation: google.maps.Animation.DROP,
     });
   });
+}
+
+MapEditor.prototype.save = function () {
+  let self = this;
+  $.post({
+    url: BACKEND_URL + "/Itinerary",
+    data: JSON.stringify(self.getSaveData()),
+    success: function (data) {
+      console.log(data);
+    }
+  })
+}
+
+MapEditor.prototype.getOwnerName = function () {
+  return this.ownerName;
+}
+
+MapEditor.prototype.getSaveData = function () {
+  return {
+    owner_name: this.getOwnerName(),
+    public: false,
+    startId: this.data.start.place_id,
+    endId: this.data.end.place_id,
+    stops: Array.from(this.stops.keys()),
+    total_trip_time: this.getTripTime(),
+    thumbnail_url: this.getThumbnailURL(),
+    shared_users: [],
+  }
+}
+
+MapEditor.prototype.getTripTime = function () {
+  return 1234;
 }
 
 MapEditor.prototype.updateSearchStart = function () {
@@ -299,7 +450,7 @@ MapEditor.prototype.addStart = function (place) {
   $(this.startSearchBarContainer).attr("placeholder", "Update Starting Point");
   $(this.startPanelContainer).find(".panel-address").html(`
     <p>
-      ${name}<br />
+      <span style="font-weight: bold;">${place.name}</span><br />
       ${address}
     </p>
   `);
@@ -328,7 +479,7 @@ MapEditor.prototype.addEnd = function (place) {
   $(this.endSearchBarContainer).attr("placeholder", "Update Destination");
   $(this.endPanelContainer).find(".panel-address").html(`
     <p>
-      ${name}<br />
+      <span style="font-weight: bold;">${place.name}</span><br />
       ${address}
     </p>
   `);
@@ -356,9 +507,11 @@ MapEditor.prototype.drawRoute = function () {
   let request = {
     origin: {placeId: this.data.start.place_id},
     destination: {placeId: this.data.end.place_id},
+    waypoints: this.getWaypoints(),
     travelMode: "DRIVING"
   };
   this.directionsService.route(request, (result, status) => {
+    console.log("Drawing new route");
     console.log(result);
     this.directions = result;
     if (status === "OK") this.directionsDisplay.setDirections(result);
@@ -366,6 +519,19 @@ MapEditor.prototype.drawRoute = function () {
     this.routeBounds = rb.box(result.routes[0].overview_path, getSearchRadius());
     //this.routeSearch();
   });
+}
+
+MapEditor.prototype.getWaypoints = function () {
+  let waypoints = []
+  this.stops.forEach((value, key) => {
+    let placeId = key;
+    waypoints.push({
+      location: {
+        placeId: placeId
+      }
+    });
+  })
+  return waypoints;
 }
 
 MapEditor.prototype.getPlaceInfo = function (placeId, callback) {
