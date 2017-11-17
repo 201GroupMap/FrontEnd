@@ -1,0 +1,16 @@
+{
+  "name": "electronTest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.17.1",
+    "electron": "^1.7.9",
+    "electron-oauth2": "^3.0.0"
+  }
+}
