@@ -137,9 +137,6 @@
         <div class="panel-title">
           <h2>Search along Route</h2>
           <button id="search-button" class="btn btn-sm">Go!</button>
-          <div class="search-bar-wrapper">
-            <input id="route-search-bar" class="controls" type="text" placeholder="Search Destination">
-          </div>
           <div id="route-search-radius-wrapper">
             <label>Search Radius (mi.)</label><br/>
             <div id="radius-radio-wrapper">
@@ -167,6 +164,9 @@
       </div>
     </div>
     <div id="main">
+      <div id="stops-search-bar" class="search-bar-wrapper" style="display: none;">
+        <input id="route-search-bar" class="controls" type="text" placeholder="Add a stop...">
+      </div>
       <div id="map"></div>
       <div id="tooltip-container">
       </div>

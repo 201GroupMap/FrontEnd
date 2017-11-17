@@ -135,33 +135,42 @@ img.infowindow-img {
       padding: 10px;
       cursor: pointer;
     }
-
-    .search-bar-wrapper {
-      border: 1px solid #dbdbdb;
-      //border-radius: 4px;
-      box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
-      //box-sizing: border-box;
-      color: rgb(72, 72, 72);
-      padding: 0;
-      width: 360px;
-      height: 50px;
-      font-size: 19px;
-    }
-
-    input[type=text] {
-      border: none;
-      caret-color: $red;
-      box-sizing: border-box;
-      width: 358px;
-      line-height: 24px;
-      padding: 11px;
-      text-overflow: ellipsis;
-      outline: none;
-    }
   }
 
   .closed {
     height: 100px;
+  }
+}
+
+#stops-search-bar {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 9999;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.search-bar-wrapper {
+  border: 1px solid #dbdbdb;
+  //border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
+  background-color: white;
+  //box-sizing: border-box;
+  color: rgb(72, 72, 72);
+  padding: 0;
+  width: 360px;
+  height: 50px;
+  font-size: 19px;
+
+  input[type=text] {
+    border: none;
+    caret-color: $red;
+    box-sizing: border-box;
+    width: 358px;
+    line-height: 24px;
+    padding: 11px;
+    text-overflow: ellipsis;
+    outline: none;
   }
 }
 

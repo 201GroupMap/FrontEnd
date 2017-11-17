@@ -73,7 +73,8 @@ MapEditor.prototype.initMap = function () {
   this.map = new google.maps.Map(this.mapContainer, {
     center: USC_COORDS,
     zoom: 13,
-    mapTypeId: "roadmap"
+    mapTypeId: "roadmap",
+    mapTypeControl: false
   });
 }
 
@@ -322,7 +323,7 @@ MapEditor.prototype.getOwnerName = function () {
 MapEditor.prototype.getSaveData = function () {
   return {
     owner_name: this.getOwnerName(),
-    public: false,
+    public: true,
     startId: this.data.start.place_id,
     endId: this.data.end.place_id,
     stops: Array.from(this.stops.keys()),
@@ -514,7 +515,11 @@ MapEditor.prototype.drawRoute = function () {
     console.log("Drawing new route");
     console.log(result);
     this.directions = result;
-    if (status === "OK") this.directionsDisplay.setDirections(result);
+    if (status === "OK") {
+      this.directionsDisplay.setDirections(result);
+      // show stops search bar
+      $("#stops-search-bar").slideDown();
+    }
     let rb = new RouteBoxer();
     this.routeBounds = rb.box(result.routes[0].overview_path, getSearchRadius());
     //this.routeSearch();
