@@ -33,26 +33,38 @@ var renderItin = function(imagelink, itin_name, star_num, itin_href) {
 	return $div;
 }
 
-var parseItin = function(itin_json) {
-	var itins = JSON.parse(itin_json);
-	var myitin = itins.myitin;
-	var publicitin = itins.publicitin;
-	var tempitin;
-	for(tempitin in myitin) {
-		$("#myitin").append(
-			renderItin(tempitin.imagelink, tempitin.itin_name, 
-				tempitin.star_num, tempitin.itin_href));
+var parseItin = function(type, itin_json) {
+	if(itin_json.length > 1) {
+		for(let i=0;i<itin_json.length;++i) {
+			let tempitin = JSON.parse(itin_json[i]);
+			$("#"+type).append(
+				renderItin(tempitin.thumbnail_url, "itin_1", 
+				3, "http://www.google.com"));
+		}
 	}
-	for(tempitin in publicitin) {
-		$("#publicitin").append(
-			renderItin(tempitin.imagelink, tempitin.itin_name, 
-				tempitin.star_num, tempitin.itin_href));
+	else {
+		let tempitin = JSON.parse(itin_json);
+		$("#"+type).append(
+				renderItin(tempitin.thumbnail_url, "itin_1", 
+				3, "http://www.google.com"));
 	}
 }
 
-for(var i=0;i<10;++i) {
-	$("#myitin").append(
-		renderItin("http://www.herl.pitt.edu/sites/default/files/images/map-close.jpg",
-		 "itin_1", 3, "http://www.google.com"));
+var noItin = function(type) {
+	$("#"+type).append("<p>No itineraries available</p>");
 }
 
+var user_name = "Daniel_Ho";
+let endpoint = "http://roadtrip-env.us-west-1.elasticbeanstalk.com/";
+$.get(endpoint+"MyItinerary/"+user_name, function(data, status) {
+		if(data.length!=0) {
+			parseItin("myitin", data);
+		}
+		else noItin("myitin");
+	});
+$.get(endpoint+"PublicItinerary", function(data, status) {
+		if(data.length!=0) {
+			parseItin("publicitin", data);
+		}
+		else noItin("publicitin");
+	});
