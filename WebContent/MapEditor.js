@@ -196,7 +196,7 @@ MapEditor.prototype.searchWithDelay = function (bounds, delay) {
             <div class="infowindow-content-wrapper">
               <h3>${place.name}</h3>
               ${place.vicinity ? `<p>${place.vicinity}</p>` : ""}
-              ${place.rating ? `<p>${place.rating}</p>` : ""}
+              ${place.rating ? `<p>${place.rating}/5</p>` : ""}
             </div>
           </div>
         `;
