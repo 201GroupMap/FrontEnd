@@ -34,6 +34,9 @@ $(document).ready(function () {
 
   $("#save-button").click(function () {
     m.save();
+    $("#save-icon").removeClass("fa-floppy-o");
+    $("#save-icon").addClass("fa-refresh");
+    $("#save-icon").addClass("fa-spin");
   });
 
   $("#shared-users-input").on("keyup", function (e) {
@@ -41,6 +44,15 @@ $(document).ready(function () {
       let username = $(this).val();
       m.addSharedUser(username);
       $(this).val("");
+    }
+  });
+
+  Sortable.create(document.getElementById("stops-list"), {
+    animation: 150,
+    onUpdate: function (event) {
+      let oldIndex = event.oldIndex;
+      let newIndex = event.newIndex;
+      m.swapStops(oldIndex, newIndex);
     }
   });
 });
