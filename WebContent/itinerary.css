@@ -4,14 +4,14 @@ body {font-family: Arial;}
 
 /* Style the tab */
 div.tab {
-    overflow: hidden;
+    /*overflow: hidden;*/
     max-height: 50px;
 }
 
 /* Style the buttons inside the tab */
 div.tab button {
     background-color: inherit;
-    float: left;
+    /*float: left;*/
     border: 1px solid #ccc;
     outline: none;
     cursor: pointer;
@@ -20,8 +20,8 @@ div.tab button {
     font-size: 17px;
 }
 
-div.tab img {
-    float: right;
+div.dropdown img {
+    /*float: right;*/
     max-height: inherit;
     border-radius: 50%;
 }
@@ -93,4 +93,27 @@ div.text {
   left: 50%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    /*min-width: 160px;*/
+    margin-top: -3px;
+    margin-left: -20px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown {
+    float: right;
+    max-height: inherit;
+    position: relative;
+    display: inline-block;
+    padding: 10px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
 }

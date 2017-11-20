@@ -1,7 +1,8 @@
 /**
  * 
  */
-
+const Store = require('electron-store');
+const store = new Store();
 
 var openItin = function(type) {
 	$(".tabcontent").hide();
@@ -10,24 +11,25 @@ var openItin = function(type) {
 	$("#"+type+"button").addClass("active");
 };
 
-$("#myitinbutton").click();
-
-var renderItin = function(imagelink, itin_name, star_num, itin_href) {
-	var $div = $("<div>", {class:"itinerary"});
-	var $container = $("<div>", {class:"container"})
+var renderItin = function(imagelink, itin_name, star_num, itinid) {
+	//console.log(itinid);
+	let $div = $("<div>", {class:"itinerary"});
+	let $container = $("<div>", {class:"container"})
 	$container.append("<img src="+imagelink+">");
 	$container.append("<div class='overlay'><div class='text'>View Itinerary</div></div>")
 	$div.append($container);
 	$div.append("<p>"+itin_name+"</p>")
-	for(var i=0;i<star_num;++i) {
+	for(let i=0;i<star_num;++i) {
 		$div.append("<span class='fa fa-star checked'></span>");
 	}
-	for(var i=0;i<5-star_num;++i) {
+	for(let i=0;i<5-star_num;++i) {
 		$div.append("<span class='fa fa-star'></span>");
 	}
-	$div.append("<a href="+itin_href+"></a>");
-	$div.click(function() {
-		window.location = $(this).find("a").attr("href");
+	$div.append("<span id='itinid' style='display:none'>"+itinid+"</span>");
+	$div.append("<div><a>Delete this itinerary</a><div>")
+	$container.click(function() {
+		store.set("itinid", $(this).parent().find("#itinid").text());
+		window.location = "map.html";
 		return false;
 	})
 	return $div;
@@ -38,15 +40,15 @@ var parseItin = function(type, itin_json) {
 		for(let i=0;i<itin_json.length;++i) {
 			let tempitin = JSON.parse(itin_json[i]);
 			$("#"+type).append(
-				renderItin(tempitin.thumbnail_url, "itin_1", 
-				3, "http://www.google.com"));
+				renderItin(tempitin.thumbnail_url, tempitin.name, 
+				3, tempitin._id.$oid));
 		}
 	}
 	else {
 		let tempitin = JSON.parse(itin_json);
 		$("#"+type).append(
-				renderItin(tempitin.thumbnail_url, "itin_1", 
-				3, "http://www.google.com"));
+				renderItin(tempitin.thumbnail_url, tempitin.name, 
+				3, tempitin._id.$oid));
 	}
 }
 
@@ -54,19 +56,54 @@ var noItin = function(type) {
 	$("#"+type).append("<p>No itineraries available</p>");
 }
 
-var user = JSON.parse(localStorage.getItem("user"));
-var user_name = user.name;
-$("#profile_img").attr('src', user.picture);
-let endpoint = "http://roadtrip-env.us-west-1.elasticbeanstalk.com/";
-$.get(endpoint+"MyItinerary/"+user_name, function(data, status) {
-		if(data.length!=0) {
-			parseItin("myitin", data);
-		}
-		else noItin("myitin");
-	});
+var newItin = function() {
+	if(store.has("itinid")) {
+		store.delete("itinid");
+	}
+	window.location = "map.html";
+}
+
+var endpoint = "http://roadtrip-env.us-west-1.elasticbeanstalk.com/";
+
+
 $.get(endpoint+"PublicItinerary", function(data, status) {
-		if(data.length!=0) {
-			parseItin("publicitin", data);
-		}
-		else noItin("publicitin");
-	});
+			if(data.length!=0) {
+				parseItin("publicitin", data);
+			}
+			else noItin("publicitin");
+		});
+
+
+var user = store.get("user");
+if(user == null) {
+	$("#myitinbutton").hide();
+	$("#publicitinbutton").click();
+}
+else {
+	var user_name = user.name;
+	$("#profile_img").attr('src', user.picture);
+	$.get(endpoint+"MyItinerary/"+user_name, function(data, status) {
+			if(data.length!=0) {
+				parseItin("myitin", data);
+			}
+			else noItin("myitin");
+		});
+	// wait for AWS to publish
+	// $.get(endpoint+"SharedItinerary/"+user_name, function(data, status) {
+	// 		if(data.length!=0) {
+	// 			parseItin("shareditin", data);
+	// 		}
+	// 		else noItin("shareditin");
+	// 	});
+	$("#myitinbutton").click();
+}
+
+
+function logout(){
+	// delete the current user varialbe
+	if(store.has("user")){
+      store.delete("user");
+    }
+    // redirect to login page
+    window.location = "login.html";
+}
