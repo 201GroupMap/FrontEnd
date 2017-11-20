@@ -110,6 +110,7 @@ img.infowindow-img {
   width: 400px;
   float: left;
   overflow-y: scroll;
+  overflow-x: hidden;
 
   .panel {
     position: relative;
@@ -214,16 +215,36 @@ img.infowindow-img {
   }
 }
 
+#info-panel-buttons-wrapper {
+  box-sizing: border-box;
+  text-align: center;
+  //margin-bottom: 5px;
+  z-index: 999;
+
+  .info-panel-button {
+    cursor: pointer;
+    /*
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 25px;
+    */
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: white;
+      background-color: $red;
+    }
+  }
+}
+
+.col-md-4 {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 #info-panel {
   border-bottom: 2px solid $red;
   padding-bottom: 5px;
-
-  #info-panel-buttons-wrapper {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    cursor: pointer;
-  }
 
   input {
     width: 300px;

@@ -21,6 +21,7 @@ function MapEditor () {
   this.endPanelContainer = document.getElementById("end-panel");
 
   this.searchResultMarkers = [];
+  this.sharedUsers = [];
 }
 
 MapEditor.prototype.init = function () {
@@ -41,7 +42,10 @@ MapEditor.prototype.init = function () {
   this.placesService = new google.maps.places.PlacesService(this.map);
 
   this.stops = new Map();
-  if (getItineraryId()) this.getPreviousData(this.loadPreviousData);
+  if (getItineraryId()) {
+    this.id = getItineraryId();
+    this.getPreviousData(this.loadPreviousData);
+  }
 }
 
 MapEditor.prototype.getPreviousData = function (callback) {
@@ -68,6 +72,13 @@ MapEditor.prototype.loadPreviousData = function (results) {
     let placeId = results.stops[i];
     this.getPlaceInfo(placeId, this.addStop.bind(this));
   }
+  // Add shared users
+  for (let i = 0; i < results.sharedUsers; i++) {
+    let username = results.sharedUsers[i];
+    this.sharedUsers.push(username);
+  }
+  // Set the name
+  $("#itinerary-name-input").val(results.name);
 }
 
 MapEditor.prototype.initMap = function () {
@@ -124,6 +135,7 @@ MapEditor.prototype.initSearchBars = function () {
 }
 
 MapEditor.prototype.routeSearch = function () {
+  console.log("Beginning route search");
   // Clear previous search results
   this.searchResults = [];
   this.searchResultMarkers.forEach((marker) => {
@@ -351,7 +363,10 @@ MapEditor.prototype.getSaveData = function () {
     stops: Array.from(this.stops.keys()),
     total_trip_time: this.getTripTime(),
     thumbnail_url: this.getThumbnailURL(),
-    shared_users: [],
+    shared_users: this.sharedUsers,
+    _id: {
+      $oid: this.id
+    },
   }
 }
 
@@ -578,6 +593,11 @@ MapEditor.prototype.getWaypoints = function () {
 
 MapEditor.prototype.setName = function (name) {
   this.name = name;
+}
+
+MapEditor.prototype.addSharedUser = function (username) {
+  this.sharedUsers.push(username);
+  $("#shared-users").append(`<option>${username}</option>`);
 }
 
 MapEditor.prototype.getPlaceInfo = function (placeId, callback) {

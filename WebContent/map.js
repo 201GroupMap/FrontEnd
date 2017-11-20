@@ -14,6 +14,7 @@ $(document).ready(function () {
   });
   */
   $("#route-search-button").click(function () {
+    console.log("go button clicked");
     m.routeSearch();
   });
   $("#itinerary-name-input").change(function () {
@@ -22,9 +23,25 @@ $(document).ready(function () {
   $("#itinerary-settings-button").click(function () {
     $("#settings-modal").modal("show");
   });
+
+  $("#home-button").click(function () {
+    window.location = "homepage.html";
+  });
+
+  $("#settings-button").click(function () {
+    $("#settings-modal").modal("show");
+  });
+
   $("#save-button").click(function () {
-    $("#settings-modal").modal("hide");
     m.save();
+  });
+
+  $("#shared-users-input").on("keyup", function (e) {
+    if (e.keyCode == 13) {
+      let username = $(this).val();
+      m.addSharedUser(username);
+      $(this).val("");
+    }
   });
 });
 

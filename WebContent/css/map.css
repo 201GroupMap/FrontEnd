@@ -84,7 +84,8 @@ img.infowindow-img {
   height: 100%;
   width: 400px;
   float: left;
-  overflow-y: scroll; }
+  overflow-y: scroll;
+  overflow-x: hidden; }
   #sidebar .panel {
     position: relative;
     width: 100%;
@@ -163,14 +164,29 @@ img.infowindow-img {
     background-color: #ef484f;
     font-size: 22px; }
 
+#info-panel-buttons-wrapper {
+  box-sizing: border-box;
+  text-align: center;
+  z-index: 999; }
+  #info-panel-buttons-wrapper .info-panel-button {
+    cursor: pointer;
+    /*
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 25px;
+    */
+    transition: all 0.2s ease; }
+    #info-panel-buttons-wrapper .info-panel-button:hover {
+      color: white;
+      background-color: #fd5c63; }
+
+.col-md-4 {
+  padding-left: 0;
+  padding-right: 0; }
+
 #info-panel {
   border-bottom: 2px solid #fd5c63;
   padding-bottom: 5px; }
-  #info-panel #info-panel-buttons-wrapper {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    cursor: pointer; }
   #info-panel input {
     width: 300px;
     font-weight: bold;

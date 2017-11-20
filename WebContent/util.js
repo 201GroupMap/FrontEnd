@@ -1,6 +1,6 @@
 function getItineraryId () {
-  let itineraryId = "5a0eac4acda5783694cd4893";
-  //return itineraryId;
-
+  // let itineraryId = store.get("itinid");
+  let itineraryId = "5a122d14cda57820b082e4a8";
   return false;
+  return itineraryId;
 }

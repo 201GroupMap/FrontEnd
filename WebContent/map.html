@@ -104,12 +104,26 @@
   </head>
   <body>
     <div id="sidebar">
-      <div id="info-panel" class="panel">
+      <div id="info-panel-buttons-wrapper" class="row">
+        <div class="col-md-4">
+          <div id="home-button" class="info-panel-button">
+            <i id="itinerary-settings-button" class="fa fa-home"></i> Home
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div id="save-button" class="info-panel-button">
+            <i id="itinerary-settings-button" class="fa fa-floppy-o"></i> Save
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div id="settings-button" class="info-panel-button">
+            <i id="itinerary-settings-button" class="fa fa-cog"></i> Settings
+          </div>
+        </div>
+      </div>
+      <div id="info-panel" class="panel container-fluid">
         <div class="panel-title">
           <input id="itinerary-name-input" type="text" placeholder="Add a name">
-        </div>
-        <div id="info-panel-buttons-wrapper">
-          <i id="itinerary-settings-button" class="fa fa-cog fa-2x"></i>
         </div>
       </div>
       <div id="start-panel" class="panel">
@@ -183,6 +197,7 @@
             <h2 class="modal-title">Itinerary Settings</h2>
           </div>
           <div class="modal-body">
+            <!-- Visibility Select -->
             <div class="form-group">
               <label for="visibility-select">Itinerary Visibility</label>
               <select class="form-control" id="visibility-select" style="width: 120px;">
@@ -190,10 +205,17 @@
                 <option value="private">Private</option>
               </select>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button id="save-button" type="button" class="btn btn-primary">Save changes</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            <div class="form-group">
+              <label for="shared-users-input">Share</label>
+              <input type="text" class="form-control" id="shared-users-input" placeholder="Type the name of a user">
+            </div>
+
+            <div class="form-group">
+              <label for="shared-users">Shared Users</label>
+              <select multiple class="form-control" id="shared-users">
+              </select>
+            </div>
           </div>
         </div>
       </div>
