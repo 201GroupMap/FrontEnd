@@ -220,6 +220,11 @@ img.infowindow-img {
   text-align: center;
   //margin-bottom: 5px;
   z-index: 999;
+  width: 393px;
+  position: fixed;
+  border-bottom: 1px solid #d8d8d8;
+  background-color: white;
+  margin-left: 0;
 
   .info-panel-button {
     cursor: pointer;
@@ -233,6 +238,7 @@ img.infowindow-img {
     &:hover {
       color: white;
       background-color: $red;
+      border-color: $red;
     }
   }
 }
@@ -243,7 +249,9 @@ img.infowindow-img {
 }
 
 #info-panel {
+  margin-top: 25px;
   border-bottom: 2px solid $red;
+  border-top: none !important;
   padding-bottom: 5px;
 
   input {

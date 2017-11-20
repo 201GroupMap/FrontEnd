@@ -354,7 +354,7 @@ MapEditor.prototype.getPublic = function () {
 }
 
 MapEditor.prototype.getSaveData = function () {
-  return {
+  let data = {
     name: this.name,
     owner_name: this.getOwnerName(),
     public: this.getPublic(),

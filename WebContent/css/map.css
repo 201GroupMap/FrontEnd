@@ -167,7 +167,12 @@ img.infowindow-img {
 #info-panel-buttons-wrapper {
   box-sizing: border-box;
   text-align: center;
-  z-index: 999; }
+  z-index: 999;
+  width: 393px;
+  position: fixed;
+  border-bottom: 1px solid #d8d8d8;
+  background-color: white;
+  margin-left: 0; }
   #info-panel-buttons-wrapper .info-panel-button {
     cursor: pointer;
     /*
@@ -178,14 +183,17 @@ img.infowindow-img {
     transition: all 0.2s ease; }
     #info-panel-buttons-wrapper .info-panel-button:hover {
       color: white;
-      background-color: #fd5c63; }
+      background-color: #fd5c63;
+      border-color: #fd5c63; }
 
 .col-md-4 {
   padding-left: 0;
   padding-right: 0; }
 
 #info-panel {
+  margin-top: 25px;
   border-bottom: 2px solid #fd5c63;
+  border-top: none !important;
   padding-bottom: 5px; }
   #info-panel input {
     width: 300px;
