@@ -14,6 +14,7 @@ function MapEditor () {
   this.mapContainer = document.getElementById("map");
   this.startSearchBarContainer = document.getElementById("start-search-bar");
   this.endSearchBarContainer = document.getElementById("end-search-bar");
+  this.stopsSearchBarContainer = document.getElementById("stops-search-bar");
   this.startSearchBarWrapper = document.getElementById("start-search-bar-wrapper");
   this.endSearchBarWrapper = document.getElementById("end-search-bar-wrapper");
   this.startPanelContainer = document.getElementById("start-panel");
@@ -88,11 +89,18 @@ MapEditor.prototype.initSearchBars = function () {
     this.endSearchBarContainer
   );
   this.endSearchBar.addListener("places_changed", this.updateSearchEnd.bind(this));
+
+  this.stopsSearchBar = new google.maps.places.SearchBox(
+    this.stopsSearchBarContainer
+  );
+  this.stopsSearchBar.addListener("places_changed", this.updateSearchStops.bind(this));
+
   this.markers = [];
 
   this.map.addListener("bounds_changed", () => {
     this.startSearchBar.setBounds(this.map.getBounds());
     this.endSearchBar.setBounds(this.map.getBounds());
+    this.stopsSearchBar.setBounds(this.map.getBounds());
   });
 
   this.map.addListener("idle", () => {
@@ -229,6 +237,10 @@ MapEditor.prototype.addStop = function (place) {
       </button>
     </div>
   `);
+  stopDiv.click(() => {
+    this.map.setCenter(place.geometry.location);
+    this.map.setZoom(10);
+  })
   stopDiv.find("button").click(this.removeStop.bind(this, placeId));
   $("#stops-list").append(stopDiv);
   stopDiv.slideDown("fast");
@@ -306,6 +318,10 @@ MapEditor.prototype.showActiveBounds = function () {
 }
 
 MapEditor.prototype.save = function () {
+  if (!this.name) {
+    alert("No name set.");
+    return;
+  }
   let self = this;
   $.post({
     url: BACKEND_URL + "/Itinerary",
@@ -320,10 +336,16 @@ MapEditor.prototype.getOwnerName = function () {
   return this.ownerName;
 }
 
+MapEditor.prototype.getPublic = function () {
+  let visibility = $("#visibility-select").find(":selected").val();
+  return (visibility === "public");
+}
+
 MapEditor.prototype.getSaveData = function () {
   return {
+    name: this.name,
     owner_name: this.getOwnerName(),
-    public: true,
+    public: this.getPublic(),
     startId: this.data.start.place_id,
     endId: this.data.end.place_id,
     stops: Array.from(this.stops.keys()),
@@ -349,6 +371,21 @@ MapEditor.prototype.updateSearchStart = function () {
   } else {
     places.forEach(this.addMarker.bind(this, this.addStart));
   }
+  this.map.fitBounds(this.searchBounds);
+}
+
+MapEditor.prototype.updateSearchStops = function () {
+  console.log("searching stops");
+  let places = this.stopsSearchBar.getPlaces();
+  if (places.length === 0) return;
+  this.searchBounds = new google.maps.LatLngBounds();
+  if (places.length === 1) {
+    this.addMarker(false, places[0]);
+    this.addStop(places[0]);
+  } else {
+    places.forEach(this.addMarker.bind(this, this.addStop));
+  }
+  $("#stops-search-bar").val("");
   this.map.fitBounds(this.searchBounds);
 }
 
@@ -518,7 +555,7 @@ MapEditor.prototype.drawRoute = function () {
     if (status === "OK") {
       this.directionsDisplay.setDirections(result);
       // show stops search bar
-      $("#stops-search-bar").slideDown();
+      $("#stops-search-bar-wrapper").slideDown();
     }
     let rb = new RouteBoxer();
     this.routeBounds = rb.box(result.routes[0].overview_path, getSearchRadius());
@@ -537,6 +574,10 @@ MapEditor.prototype.getWaypoints = function () {
     });
   })
   return waypoints;
+}
+
+MapEditor.prototype.setName = function (name) {
+  this.name = name;
 }
 
 MapEditor.prototype.getPlaceInfo = function (placeId, callback) {

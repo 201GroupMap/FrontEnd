@@ -13,11 +13,21 @@ $(document).ready(function () {
     }
   });
   */
-  $("#search-button").click(function () {
+  $("#route-search-button").click(function () {
     m.routeSearch();
+  });
+  $("#itinerary-name-input").change(function () {
+    m.setName($(this).val());
+  });
+  $("#itinerary-settings-button").click(function () {
+    $("#settings-modal").modal("show");
+  });
+  $("#save-button").click(function () {
+    $("#settings-modal").modal("hide");
+    m.save();
   });
 });
 
 function getSearchRadius() {
-  return $('input[name=search-radius]:checked').val();
+  return $("#route-search-radius-select").find(":selected").val();
 }

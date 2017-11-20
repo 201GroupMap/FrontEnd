@@ -1,4 +1,5 @@
 $red: #fd5c63;
+$dark-red: #ef484f;
 $dark-grey: rgb(72, 72, 72);
 
 body {
@@ -31,6 +32,7 @@ img.infowindow-img {
 }
 
 .pac-container {
+  z-index: 10000;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
   box-sizing: border-box;
   min-width: 358px;
@@ -52,6 +54,14 @@ img.infowindow-img {
 #route-options-list {
   list-style: none;
   padding-left: 0;
+}
+
+.panel:not(#info-panel) > .panel-title {
+  margin-top: 15px;
+}
+
+.panel-content-route {
+  padding-left: 10px;
 }
 
 .route-option {
@@ -102,6 +112,7 @@ img.infowindow-img {
   overflow-y: scroll;
 
   .panel {
+    position: relative;
     width: 100%;
     border-top-width: 1px;
     border-top-color: #d8d8d8;
@@ -135,6 +146,12 @@ img.infowindow-img {
       padding: 10px;
       cursor: pointer;
     }
+
+    button.close {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+    }
   }
 
   .closed {
@@ -142,11 +159,11 @@ img.infowindow-img {
   }
 }
 
-#stops-search-bar {
+#stops-search-bar-wrapper {
   position: absolute;
   top: 10px;
   left: 10px;
-  z-index: 9999;
+  z-index: 999;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -174,10 +191,50 @@ img.infowindow-img {
   }
 }
 
-button.close {
+#route-search-button {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 20px;
+  right: 20px;
+  background-color: $red;
+  color: white;
+  height: 35px;
+  width: 60px;
+  font-size: 20px;
+  line-height: 20px;
+  outline: none;
+  transition: 150ms;
+  transition-timing-function: ease-in-out;
+  -webkit-transition: 150ms;
+  -webkit-transition-timing-function: ease-in-out;
+
+  &:hover {
+    background-color: $dark-red;
+    font-size: 22px;
+    //line-height: 22px;
+  }
+}
+
+#info-panel {
+  border-bottom: 2px solid $red;
+  padding-bottom: 5px;
+
+  #info-panel-buttons-wrapper {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+  }
+
+  input {
+    width: 300px;
+    font-weight: bold;
+    color: rgb(72, 72, 72);
+    outline: none;
+    border: none;
+    font-size: 30px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+  }
 }
 
 ::-webkit-scrollbar {

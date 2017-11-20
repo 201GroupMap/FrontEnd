@@ -22,6 +22,7 @@ img.infowindow-img {
   height: 100px; }
 
 .pac-container {
+  z-index: 10000;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
   box-sizing: border-box;
   min-width: 358px;
@@ -40,6 +41,12 @@ img.infowindow-img {
 #route-options-list {
   list-style: none;
   padding-left: 0; }
+
+.panel:not(#info-panel) > .panel-title {
+  margin-top: 15px; }
+
+.panel-content-route {
+  padding-left: 10px; }
 
 .route-option {
   cursor: pointer;
@@ -79,6 +86,7 @@ img.infowindow-img {
   float: left;
   overflow-y: scroll; }
   #sidebar .panel {
+    position: relative;
     width: 100%;
     border-top-width: 1px;
     border-top-color: #d8d8d8;
@@ -103,14 +111,18 @@ img.infowindow-img {
       margin: 10px 0px;
       padding: 10px;
       cursor: pointer; }
+    #sidebar .panel button.close {
+      position: absolute;
+      top: 5px;
+      right: 5px; }
   #sidebar .closed {
     height: 100px; }
 
-#stops-search-bar {
+#stops-search-bar-wrapper {
   position: absolute;
   top: 10px;
   left: 10px;
-  z-index: 9999;
+  z-index: 999;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }
 
 .search-bar-wrapper {
@@ -132,10 +144,42 @@ img.infowindow-img {
     text-overflow: ellipsis;
     outline: none; }
 
-button.close {
+#route-search-button {
   position: absolute;
-  top: 5px;
-  right: 5px; }
+  top: 20px;
+  right: 20px;
+  background-color: #fd5c63;
+  color: white;
+  height: 35px;
+  width: 60px;
+  font-size: 20px;
+  line-height: 20px;
+  outline: none;
+  transition: 150ms;
+  transition-timing-function: ease-in-out;
+  -webkit-transition: 150ms;
+  -webkit-transition-timing-function: ease-in-out; }
+  #route-search-button:hover {
+    background-color: #ef484f;
+    font-size: 22px; }
+
+#info-panel {
+  border-bottom: 2px solid #fd5c63;
+  padding-bottom: 5px; }
+  #info-panel #info-panel-buttons-wrapper {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer; }
+  #info-panel input {
+    width: 300px;
+    font-weight: bold;
+    color: #484848;
+    outline: none;
+    border: none;
+    font-size: 30px;
+    margin-bottom: 5px;
+    margin-top: 5px; }
 
 ::-webkit-scrollbar {
   width: 7px; }

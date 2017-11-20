@@ -9,11 +9,12 @@
       integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
       crossorigin="anonymous">
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Karla:400,400i,700,700i" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <link href="https://unpkg.com/tippy.js@1.4.1/dist/tippy.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link href="css/map.css" rel="stylesheet">
+    <link href="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://unpkg.com/tippy.js@1.4.1/dist/tippy.min.js"></script>
 
     <title>Places Searchbox</title>
@@ -103,6 +104,14 @@
   </head>
   <body>
     <div id="sidebar">
+      <div id="info-panel" class="panel">
+        <div class="panel-title">
+          <input id="itinerary-name-input" type="text" placeholder="Add a name">
+        </div>
+        <div id="info-panel-buttons-wrapper">
+          <i id="itinerary-settings-button" class="fa fa-cog fa-2x"></i>
+        </div>
+      </div>
       <div id="start-panel" class="panel">
         <div class="panel-title">
           <h2>Starting Point</h2>
@@ -136,20 +145,16 @@
       <div id="route-search-panel" class="panel">
         <div class="panel-title">
           <h2>Search along Route</h2>
-          <button id="search-button" class="btn btn-sm">Go!</button>
-          <div id="route-search-radius-wrapper">
-            <label>Search Radius (mi.)</label><br/>
-            <div id="radius-radio-wrapper">
-              <div class="radio-wrapper">
-                <input type="radio" name="search-radius" value="40" checked>40
-              </div>
-              <div class="radio-wrapper">
-                <input type="radio" name="search-radius" value="80">80
-              </div>
-              <div class="radio-wrapper">
-                <input type="radio" name="search-radius" value="120">120
-              </div>
-            </div>
+          <button id="route-search-button" class="btn btn-sm">Go!</button>
+        </div>
+        <div class="panel-content-route">
+          <div id="route-search-radius-wrapper" class="form-inline">
+            <label class="mr-sm-2" for="route-search-radius-select">Distance from route</label>
+            <select id="route-search-radius-select" class="custom-select mb-2 mr-sm-2 mb-sm-0">
+              <option value="40" selected>40 miles</option>
+              <option value="80">80 miles</option>
+              <option value="120">120 miles</option>
+            </select>
           </div>
           <div id="route-options-wrapper">
             <label>Filters</label>
@@ -164,13 +169,35 @@
       </div>
     </div>
     <div id="main">
-      <div id="stops-search-bar" class="search-bar-wrapper" style="display: none;">
-        <input id="route-search-bar" class="controls" type="text" placeholder="Add a stop...">
+      <div id="stops-search-bar-wrapper" class="search-bar-wrapper" style="display: none;">
+        <input id="stops-search-bar" class="controls" type="text" placeholder="Add a stop...">
       </div>
       <div id="map"></div>
       <div id="tooltip-container">
       </div>
     </div>
+    <div id="settings-modal" class="modal fade">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">Itinerary Settings</h2>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="visibility-select">Itinerary Visibility</label>
+              <select class="form-control" id="visibility-select" style="width: 120px;">
+                <option value="public" selected>Public</option>
+                <option value="private">Private</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="save-button" type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+  </div>
     <!--
     <script>
       // This example adds a search box to a map, using the Google Place Autocomplete
