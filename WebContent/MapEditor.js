@@ -270,6 +270,7 @@ MapEditor.prototype.removeStop = function (placeId) {
   if (this.stops.size === 0) {
     $("#stops-panel").slideUp("fast");
   }
+  this.drawRoute();
 }
 
 MapEditor.prototype.getThumbnailURL = function () {
